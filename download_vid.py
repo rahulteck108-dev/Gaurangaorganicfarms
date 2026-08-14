@@ -14,5 +14,6 @@ try:
         data = response.read()
         out_file.write(data)
         print("Downloaded:", len(data), "bytes")
+        
 except Exception as e:
     print("Error:", e)
