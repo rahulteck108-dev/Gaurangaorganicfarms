@@ -1,0 +1,17 @@
+{
+  "name": "Gauranga Organic Farm",
+  "short_name": "Gauranga",
+  "description": "Pure Organic & A2 Dairy Products from our farm to your table.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2d6a4f",
+  "icons": [
+    {
+      "src": "images/gm.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

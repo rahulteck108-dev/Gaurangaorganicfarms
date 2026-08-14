@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2d6a4f">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/gm.png">
+    <title>Payment | Gauranga Organic Farm</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=4">
+    <style>
+        .checkout-container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .checkout-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .checkout-section h2 {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            border: 1px solid var(--border);
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: rgba(45, 106, 79, 0.05);
+        }
+
+        .payment-method input[type="radio"] {
+            transform: scale(1.4);
+            accent-color: var(--primary);
+        }
+
+        .order-summary {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .summary-total {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            border-top: 2px solid var(--border);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar solid-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-seedling"></i> Gauranga Organic
+            </a>
+
+            <div class="nav-icons">
+                <a href="checkout.html" aria-label="Back"><i class="fas fa-arrow-left"></i> Back to Shipping</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Payment Container -->
+    <form class="checkout-container" onsubmit="handlePayment(event)">
+
+        <!-- 1. Payment Layout (Left Column) -->
+        <div class="checkout-section">
+            <h2><i class="fas fa-wallet" style="color: var(--primary-light);"></i> Payment Mode</h2>
+
+            <!-- Payment Methods List -->
+            <div class="payment-methods">
+                <!-- UPI -->
+                <label class="payment-method" style="flex-wrap: wrap;">
+                    <input type="radio" name="payment" value="upi" required>
+                    <i class="fas fa-qrcode" style="color: var(--accent); font-size: 1.8rem; width: 30px;"></i>
+                    <div style="flex: 1;">
+                        <strong style="font-size: 1.1rem;">UPI / QR Code</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;">GPay, PhonePe, Paytm</p>
+                    </div>
+
+                    <!-- QR Code Container (Hidden by default) -->
+                    <div id="qr-container"
+                        style="display: none; width: 100%; text-align: center; margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1.5rem;">
+                        <img id="upi-qr"
+                            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=organic@upi"
+                            alt="UPI QR Code"
+                            style="border-radius: 8px; border: 2px solid var(--primary); padding: 5px; background: white;">
+                        <p style="font-size: 0.9rem; color: var(--primary-dark); font-weight: 500; margin-top: 0.8rem;">
+                            Scan to pay <strong id="qr-amount">₹0</strong></p>
+                        <p style="font-size: 0.75rem; color: var(--text-light);">Wait for confirmation after scanning
+                        </p>
+                    </div>
+                </label>
+
+                <!-- Cards -->
+                <label class="payment-method" style="flex-wrap: wrap;">
+                    <input type="radio" name="payment" value="card">
+                    <i class="fas fa-credit-card" style="color: var(--primary); font-size: 1.8rem; width: 30px;"></i>
+                    <div style="flex: 1;">
+                        <strong style="font-size: 1.1rem;">Credit / Debit Card</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;">Visa, Mastercard, RuPay</p>
+                    </div>
+
+                    <!-- Card Details Form (Hidden by default) -->
+                    <div id="card-container"
+                        style="display: none; width: 100%; margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 1rem;">
+                            <label style="font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Card
+                                Number</label>
+                            <div class="input-field" style="display: flex; align-items: center; position: relative;">
+                                <i class="fas fa-credit-card"
+                                    style="position: absolute; left: 1rem; color: var(--text-light);"></i>
+                                <input type="text" id="card-num" placeholder="0000 0000 0000 0000" pattern="[0-9 ]*"
+                                    maxlength="19"
+                                    style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border: 1px solid var(--border); border-radius: 8px;">
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="gap: 1rem; margin-bottom: 1rem;">
+                            <div class="input-group">
+                                <label style="font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Expiry
+                                    (MM/YY)</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; position: relative;">
+                                    <i class="fas fa-calendar"
+                                        style="position: absolute; left: 1rem; color: var(--text-light);"></i>
+                                    <input type="text" id="card-exp" placeholder="MM/YY" pattern=".*" maxlength="5"
+                                        style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border: 1px solid var(--border); border-radius: 8px;">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label style="font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">CVV</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; position: relative;">
+                                    <i class="fas fa-lock"
+                                        style="position: absolute; left: 1rem; color: var(--text-light);"></i>
+                                    <input type="password" id="card-cvv" placeholder="123" pattern="[0-9]{3,4}"
+                                        maxlength="4"
+                                        style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border: 1px solid var(--border); border-radius: 8px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label style="font-size: 0.85rem; display: block; margin-bottom: 0.4rem;">Name on
+                                Card</label>
+                            <div class="input-field" style="display: flex; align-items: center; position: relative;">
+                                <i class="fas fa-user"
+                                    style="position: absolute; left: 1rem; color: var(--text-light);"></i>
+                                <input type="text" id="card-name" placeholder="John Doe"
+                                    style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border: 1px solid var(--border); border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- COD -->
+                <label class="payment-method">
+                    <input type="radio" name="payment" value="cod">
+                    <i class="fas fa-truck-fast" style="color: var(--text-main); font-size: 1.8rem; width: 30px;"></i>
+                    <div>
+                        <strong style="font-size: 1.1rem;">Cash on Delivery</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;">Pay with cash when order
+                            arrives</p>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Checkout Button -->
+            <button type="submit" class="btn btn-primary auth-btn"
+                style="margin-top: 1rem; border-radius: 50px; font-size: 1.1rem; width: 100%; padding: 1rem;">
+                <i class="fas fa-check-circle"></i> Confirm & Place Order
+            </button>
+            <p style="text-align: center; color: var(--text-light); font-size: 0.8rem; margin-top: 1rem;"><i
+                    class="fas fa-lock"></i> SSL Secured Payment</p>
+        </div>
+
+        <!-- 2. Order Summary (Right Column) -->
+        <div class="order-summary">
+            <h2 style="font-family: var(--font-heading); color: var(--primary-dark); font-size: 1.5rem; margin-bottom: 1.5rem;">Order Summary</h2>
+            <div id="cart-items-list" style="margin-bottom: 2rem;">
+                <!-- Items will be injected here -->
+            </div>
+            <div class="summary-row">
+                <span>Items Total (<span id="summary-count">0</span>)</span>
+                <span id="cart-subtotal">₹0</span>
+            </div>
+            <div class="summary-row" style="color: var(--primary-light);">
+                <span>Delivery Fee</span>
+                <span>Free</span>
+            </div>
+            <div class="summary-row summary-total">
+                <span>Total Amount</span>
+                <span id="cart-total">₹0</span>
+            </div>
+        </div>
+
+    </form>
+
+    <script>
+        // On Load Logic
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCartSummary();
+            setupPaymentToggles();
+        });
+
+        function renderCartSummary() {
+            const listContainer = document.getElementById('cart-items-list');
+            const summaryCount = document.getElementById('summary-count');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            const qrAmountEl = document.getElementById('qr-amount');
+            
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: var(--text-light);">Your cart is empty.</p>';
+                summaryCount.textContent = '0';
+                subtotalEl.textContent = '₹0';
+                totalEl.textContent = '₹0';
+                qrAmountEl.textContent = '₹0';
+                return;
+            }
+
+            let total = 0;
+            let totalQty = 0;
+            listContainer.innerHTML = '';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                totalQty += item.quantity;
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'summary-row';
+                itemRow.style.fontSize = '0.9rem';
+                itemRow.style.color = 'var(--text-light)';
+                itemRow.style.marginBottom = '0.8rem';
+                itemRow.innerHTML = `
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <img src="${item.image}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-main);">${item.title}</div>
+                            <div>₹${item.price} x ${item.quantity}</div>
+                        </div>
+                    </div>
+                    <div style="font-weight: 600; color: var(--text-main);">₹${itemTotal}</div>
+                `;
+                listContainer.appendChild(itemRow);
+            });
+
+            summaryCount.textContent = totalQty;
+            subtotalEl.textContent = `₹${total}`;
+            totalEl.textContent = `₹${total}`;
+            qrAmountEl.textContent = `₹${total}`;
+
+            // Generate Dynamic QR encoded with Total value
+            const qrImage = document.getElementById('upi-qr');
+            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=gauranga@upi&pn=Gauranga%20Organic%20Farm&am=${total}&cu=INR`;
+        }
+
+        function setupPaymentToggles() {
+            const paymentRadios = document.querySelectorAll('input[name="payment"]');
+            const qrContainer = document.getElementById('qr-container');
+            const cardContainer = document.getElementById('card-container');
+            const cardInputs = [document.getElementById('card-num'), document.getElementById('card-exp'), document.getElementById('card-cvv'), document.getElementById('card-name')];
+
+            paymentRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    qrContainer.style.display = val === 'upi' ? 'block' : 'none';
+                    cardContainer.style.display = val === 'card' ? 'block' : 'none';
+
+                    cardInputs.forEach(input => {
+                        if (val === 'card') {
+                            input.setAttribute('required', 'true');
+                        } else {
+                            input.removeAttribute('required');
+                        }
+                    });
+                });
+            });
+
+            // Auto-space card number
+            document.getElementById('card-num').addEventListener('input', function (e) {
+                let value = e.target.value.replace(/[^\d]/g, '');
+                e.target.value = value.replace(/(.{4})/g, '$1 ').trim();
+            });
+
+            // Auto-format MM/YY
+            document.getElementById('card-exp').addEventListener('input', function (e) {
+                let val = e.target.value.replace(/[^\d]/g, '');
+                if (val.length > 2) {
+                    val = val.substring(0, 2) + '/' + val.substring(2, 4);
+                }
+                e.target.value = val;
+            });
+        }
+
+        // Form Submit
+        async function handlePayment(e) {
+            e.preventDefault();
+
+            if (cart.length === 0) {
+                alert("Your cart is empty! Please add items before checking out.");
+                window.location.href = "index.html#shop";
+                return;
+            }
+
+            const btn = document.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processing Payment...';
+            btn.disabled = true;
+
+            let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            try {
+                const response = await fetch('http://localhost:3000/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: null, items: cart, totalAmount: total })
+                });
+
+                if (response.ok) {
+                    alert("🎉 Order Placed Successfully! Your fresh organic goods will be delivered shortly.");
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('cartCount');
+                    window.location.href = "index.html";
+                } else {
+                    const data = await response.json();
+                    alert("Error: " + (data.error || "Failed to place order"));
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error("Payment error:", err);
+                alert("Network error, could not connect to server. Simulating success for now.");
+                // Fallback for demo if server not running
+                setTimeout(() => {
+                    alert("🎉 Order Placed Successfully! Your fresh organic goods will be delivered shortly.");
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('cartCount');
+                    window.location.href = "index.html";
+                }, 1000);
+            }
+        }
+
+    </script>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/916200057077?text=Hello%20Gauranga%20Organic%20Farm!%20I%20would%20like%20to%20know%20more%20about%20your%20pure%20organic%20and%20A2%20dairy%20products."
+        class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" style="width: 35px; height: 35px;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    </a>
+    <script src="pwa.js"></script>
+</body>
+
+</html>

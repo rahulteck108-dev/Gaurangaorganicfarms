@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2d6a4f">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/gm.png">
+    <title>Sign Up | Gauranga Organic Farm</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+
+<body class="auth-page">
+
+    <!-- Navigation (Simplified for auth page) -->
+    <nav class="navbar solid-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-seedling"></i> Gauranga Organic Farm
+            </a>
+
+            <div class="nav-icons">
+                <a href="index.html" aria-label="Home"><i class="fas fa-home"></i> Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Container -->
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Join our organic community today.</p>
+            </div>
+
+            <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+                <div class="input-group">
+                    <label for="fullname">Full Name</label>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="fullname" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="mobile">Mobile Number</label>
+                    <div class="input-field" style="display: flex; gap: 10px;">
+                        <div style="position: relative; flex: 1; display: flex; align-items: center;">
+                            <i class="fas fa-phone"
+                                style="position: absolute; left: 1rem; color: var(--text-light);"></i>
+                            <input type="tel" id="mobile" placeholder="Enter 10 digit number" pattern="[0-9]{10}"
+                                required
+                                style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border: 1px solid var(--border); border-radius: 8px;">
+                        </div>
+                        <button type="button" class="btn btn-outline" id="sendOtpBtn" onclick="sendOTP()"
+                            style="padding: 0 1rem; white-space: nowrap;">Send OTP</button>
+                    </div>
+                    <small id="mobile-msg"
+                        style="color: var(--primary); font-size: 0.8rem; margin-top: 0.3rem; display: block;"></small>
+                </div>
+
+                <div class="input-group" id="otp-group" style="display: none;">
+                    <label for="otp">Enter Verification Code (OTP)</label>
+                    <div class="input-field">
+                        <i class="fas fa-key"></i>
+                        <input type="text" id="otp" placeholder="Enter 4-digit OTP" pattern="[0-9]{4}">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Create a strong password" required
+                            minlength="6">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirm_password" placeholder="Confirm your password" required
+                            minlength="6">
+                    </div>
+                    <small id="password-error" class="error-msg"></small>
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-btn">Create Account</button>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html">Sign in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let generatedOTP = null;
+        let isOtpVerified = false;
+
+        function sendOTP() {
+            const mobileInput = document.getElementById("mobile");
+            const mobileVal = mobileInput.value.trim();
+            const mobileMsg = document.getElementById("mobile-msg");
+
+            if (!/^[0-9]{10}$/.test(mobileVal)) {
+                mobileMsg.style.color = "#e63946";
+                mobileMsg.textContent = "Please enter a valid 10-digit mobile number.";
+                return;
+            }
+
+            // Generate standard 4-digit Mock OTP
+            generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+            console.log("MOCK OTP Generated:", generatedOTP); // For debugging purposes
+
+            document.getElementById("sendOtpBtn").textContent = "Resend OTP";
+            mobileMsg.style.color = "var(--primary)";
+            mobileMsg.innerHTML = `OTP sent successfully! (<b>Mock OTP: ${generatedOTP}</b>)`;
+
+            document.getElementById("otp-group").style.display = "block";
+            document.getElementById("otp").setAttribute("required", "true");
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            const fullname = document.getElementById("fullname").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const mobile = document.getElementById("mobile").value.trim();
+            const pass = document.getElementById("password").value;
+            const confirm = document.getElementById("confirm_password").value;
+            const errorMsg = document.getElementById("password-error");
+            const otpInput = document.getElementById("otp").value.trim();
+            const mobileMsg = document.getElementById("mobile-msg");
+
+            if (pass !== confirm) {
+                errorMsg.textContent = "Passwords do not match!";
+                return;
+            }
+
+            errorMsg.textContent = "";
+
+            if (!generatedOTP) {
+                mobileMsg.style.color = "#e63946";
+                mobileMsg.textContent = "Please verify your mobile number first.";
+                return;
+            }
+
+            if (otpInput !== generatedOTP) {
+                mobileMsg.style.color = "#e63946";
+                mobileMsg.textContent = "Invalid OTP. Please try again.";
+                return;
+            }
+
+            // OTP is matched
+            isOtpVerified = true;
+            mobileMsg.style.color = "var(--primary)";
+            mobileMsg.textContent = "Mobile number verified successfully!";
+
+            const btn = document.querySelector(".auth-btn");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Registering...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullname, email, mobile, password: pass })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert("Account created successfully! Welcome to Gauranga Organic Farm.");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Error: " + (data.error || "Failed to create account"));
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error("Signup error:", err);
+                alert("Network error, could not connect to server. Simulating success for now.");
+                // Fallback for demo if server not running
+                setTimeout(() => {
+                    alert("Account created successfully! Welcome to Gauranga Organic Farm.");
+                    window.location.href = "index.html";
+                }, 1000);
+            }
+        }
+    </script>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/916200057077?text=Hello%20Gauranga%20Organic%20Farm!%20I%20would%20like%20to%20know%20more%20about%20your%20pure%20organic%20and%20A2%20dairy%20products."
+        class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" style="width: 35px; height: 35px;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    </a>
+    <script src="pwa.js"></script>
+</body>
+
+</html>

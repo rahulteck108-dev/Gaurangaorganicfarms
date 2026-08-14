@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2d6a4f">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/gm.png">
+    <title>Gauranga Organic Farm | Fresh & Natural</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="top-bar">
+        <p><i class="fas fa-leaf"></i> 100% Certified Organic | Free Delivery on orders over ₹500 | Farm Fresh to your
+            Doorstep <i class="fas fa-leaf"></i></p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-seedling"></i> Gauranga Organic Farm
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#shop">Shop Fresh</a></li>
+                <li><a href="#about">Our Story</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search..." class="search-input">
+                    <a href="#" aria-label="Search" class="search-btn" id="search-btn"><i class="fas fa-search"></i></a>
+                </div>
+                <a href="login.html" aria-label="User Account"><i class="fas fa-user"></i></a>
+                <a href="checkout.html" class="cart-icon" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <span class="badge">Direct from our Farm</span>
+            <h1>Nature's Purest <span>Bounty</span></h1>
+            <p>Experience the true taste of ancient Indian farming. We grow organic, pesticide-free vegetables, fruits,
+                and A2 dairy products with love and care.</p>
+            <div class="hero-btns">
+                <a href="#shop" class="btn btn-primary">Shop Now <i class="fas fa-arrow-right"></i></a>
+                <a href="#about" class="btn btn-outline">Our Farming Process</a>
+            </div>
+        </div>
+        <div class="hero-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&auto=format&fit=crop&q=80"
+                alt="Fresh Organic Vegetables from Gauranga Farm" class="hero-image-hd">
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature-box" data-tilt data-tilt-max="20" data-tilt-scale="1.05" data-tilt-glare="true"
+            data-tilt-max-glare="0.5">
+            <i class="fas fa-leaf"></i>
+            <h3>100% Organic</h3>
+            <p>No synthetic chemicals or pesticides.</p>
+        </div>
+        <div class="feature-box" data-tilt data-tilt-max="20" data-tilt-scale="1.05" data-tilt-glare="true"
+            data-tilt-max-glare="0.5">
+            <i class="fas fa-truck-fast"></i>
+            <h3>Farm to Door</h3>
+            <p>Harvested today, delivered tomorrow.</p>
+        </div>
+        <div class="feature-box" data-tilt data-tilt-max="20" data-tilt-scale="1.05" data-tilt-glare="true"
+            data-tilt-max-glare="0.5">
+            <i class="fas fa-cow"></i>
+            <h3>A2 Dairy</h3>
+            <p>Pure milk from grass-fed Desi cows.</p>
+        </div>
+        <div class="feature-box" data-tilt data-tilt-max="20" data-tilt-scale="1.05" data-tilt-glare="true"
+            data-tilt-max-glare="0.5">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h3>Sustainable</h3>
+            <p>Eco-friendly and traditional Vedic farming.</p>
+        </div>
+    </section>
+
+    <!-- A2 Gir Cow Section -->
+    <section id="gir-cow" style="padding: 5rem 2rem; background-color: var(--white);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; color: var(--primary-dark);">The Pride of Our Farm: <span
+                        style="color: var(--accent);">A2 Gir Cows</span></h2>
+                <p style="color: var(--text-light); max-width: 700px; margin: 1rem auto; font-size: 1.1rem;">Our
+                    traditional Indian Gir cows are the source of our incredibly pure dairy products. Known for their
+                    unique anatomy and A2 milk, they are nurtured with love and organic fodder.</p>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; align-items: center;">
+                <div style="position: relative; text-align: center; background: #000; border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; transform-style: preserve-3d;"
+                    data-tilt data-tilt-max="10" data-tilt-scale="1.02" data-tilt-glare="true"
+                    data-tilt-max-glare="0.5">
+                    <!-- User Provided Diagram Cow Image -->
+                    <img src="images/gir-cow.jpg" alt="A2 Gir Cow Diagram with labels"
+                        style="width: 100%; display: block; transform: translateZ(20px);">
+                </div>
+
+                <div>
+                    <div style="margin-bottom: 2rem;">
+                        <h3
+                            style="font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 0.8rem;">
+                            <i class="fas fa-check-circle"></i> Prominent Hump
+                        </h3>
+                        <p style="color: var(--text-light); margin-top: 0.5rem;">The Surya Ketu Nadi (vein) passes
+                            through the prominent hump, absorbing solar energy to enrich the milk with golden
+                            properties.</p>
+                    </div>
+                    <div style="margin-bottom: 2rem;">
+                        <h3
+                            style="font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 0.8rem;">
+                            <i class="fas fa-check-circle"></i> Rounded Shape Forehead
+                        </h3>
+                        <p style="color: var(--text-light); margin-top: 0.5rem;">Their majestic, deeply rounded
+                            foreheads give them a calm, peaceful nature—resulting in hormone-free, stress-free milk.</p>
+                    </div>
+                    <div style="margin-bottom: 2rem;">
+                        <h3
+                            style="font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 0.8rem;">
+                            <i class="fas fa-check-circle"></i> Folded Dewlap
+                        </h3>
+                        <p style="color: var(--text-light); margin-top: 0.5rem;">A prominent skin fold beneath their
+                            neck helps them stay cool and strongly supports higher immunity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heritage Dairy Products Highlight -->
+    <section style="background-color: var(--primary-light); padding: 5rem 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 2.5rem; color: var(--white); margin-bottom: 3rem;">Premium Heritage Dairy</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+
+                <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transform-style: preserve-3d;"
+                    data-tilt data-tilt-max="15" data-tilt-scale="1.02" data-tilt-glare="true"
+                    data-tilt-max-glare="0.4">
+                    <img src="images/butter.jpg" alt="Fresh White Butter"
+                        style="width: 100%; height: 250px; object-fit: cover; transform: translateZ(20px);">
+                    <div style="padding: 1.5rem; text-align: left; transform: translateZ(30px);">
+                        <h3 style="color: var(--primary-dark); font-size: 1.4rem; margin-bottom: 0.5rem;">Fresh White
+                            Butter (Makhan)</h3>
+                        <p style="color: var(--text-light); font-size: 0.95rem;">Hand-churned traditionally using the
+                            Bilona method just like in the old days.</p>
+                    </div>
+                </div>
+
+
+
+                <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transform-style: preserve-3d;"
+                    data-tilt data-tilt-max="15" data-tilt-scale="1.02" data-tilt-glare="true"
+                    data-tilt-max-glare="0.4">
+                    <img src="images/honey.jpg" alt="Organic Honey"
+                        style="width: 100%; height: 250px; object-fit: cover; transform: translateZ(20px);">
+                    <div style="padding: 1.5rem; text-align: left; transform: translateZ(30px);">
+                        <h3 style="color: var(--primary-dark); font-size: 1.4rem; margin-bottom: 0.5rem;">Raw Farm Honey
+                        </h3>
+                        <p style="color: var(--text-light); font-size: 0.95rem;">Unheated and unfiltered—collected
+                            harmoniously from our farm's blossom fields.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Process Section -->
+    <section id="process" class="process-section">
+        <div class="process-container">
+            <div class="section-title">
+                <h2>What Makes Our Products <span style="color: var(--white);">Unique</span></h2>
+                <p>OUR PROCESS</p>
+            </div>
+            <p class="process-intro">Free from any kind harmful chemicals, preservatives, additives and anything that is
+                not natural. All our products are made using the age-old techniques which ensure that the nutritional
+                integrity of the food is not compromised. Our processes are as pure as our heart!</p>
+
+            <div class="process-timeline">
+                <!-- Step 01 -->
+                <div class="process-step">
+                    <div class="step-media">
+                        <video src="images/desi.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Ahinsak Hand Milking</h3>
+                        <p>We extract A2 milk from our Gir Cows using the ancient Indian practice of “dohan”. According
+                            to the Veda’s, “dohan” literally means letting the calf feed to its satisfaction from two
+                            “anchals”, while the remaining two are used to obtain milk for our consumption.</p>
+                    </div>
+                </div>
+
+                <!-- Step 02 -->
+                <div class="process-step">
+                    <div class="step-media">
+                        <video src="images/curd.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Made from Curd, not Cream</h3>
+                        <p>After boiling the milk, we turn it into rich wholesome curd overnight in an earthen pot.
+                            It takes about 30 litres of A2 milk to produce 1 litre of A2 Ghee.</p>
+                    </div>
+                </div>
+
+                <!-- Step 03 -->
+                <div class="process-step">
+                    <div class="step-media">
+                        <video src="images/churning.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Traditionally Wood Churned</h3>
+                        <p>The curd is hand churned using a bi-directional teak wood churner also called as bilona
+                            to produce delicious makkhan.</p>
+                    </div>
+                </div>
+
+                <!-- Step 04 -->
+                <div class="process-step">
+                    <div class="step-media">
+                        <video src="images/butter.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Slow Cooked on Cow Dung Cakes</h3>
+                        <p>This makkhan is then slow cooked in earthen pots over lighted cow dung cakes to produce
+                            this golden nectare called Ghee.</p>
+                    </div>
+                </div>
+
+                <!-- Step 05 -->
+                <div class="process-step">
+                    <div class="step-media">
+                        <video src="images/finalghee.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    <div class="step-number">05</div>
+                    <div class="step-content">
+                        <h3>Packaged in Glass Jars</h3>
+                        <p>We purposely package our A2 Ghee in glass jars so that it doesn’t get contaminated as it
+                            would in plastic jars.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mega Product Showcase -->
+    <section class="product-hero">
+        <div class="product-hero-image-gallery" style="display: flex; flex-direction: column;">
+            <div class="product-hero-media"
+                style="display: flex; overflow-x: hidden; scroll-snap-type: x mandatory; gap: 1rem; scrollbar-width: none;">
+                <img src="images/gm.png" alt="Hand-churned Gir Cow A2 Ghee - Jars"
+                    style="flex: 0 0 100%; scroll-snap-align: center; width: 100%; border-radius: 20px; box-shadow: var(--shadow); object-fit: cover; aspect-ratio: 1/1;">
+                <img src="images/gheeimage.png" alt="Pure A2 Ghee Single Jar"
+                    style="flex: 0 0 100%; scroll-snap-align: center; width: 100%; border-radius: 20px; box-shadow: var(--shadow); object-fit: cover; aspect-ratio: 1/1;">
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center;">
+                <img src="images/gm.png"
+                    style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; cursor: pointer; border: 3px solid var(--primary); transition: 0.3s;"
+                    onclick="this.parentElement.previousElementSibling.scrollTo({left: 0, behavior: 'smooth'}); this.style.borderColor='var(--primary)'; this.nextElementSibling.style.borderColor='transparent';">
+                <img src="images/gheeimage.png"
+                    style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; cursor: pointer; border: 3px solid transparent; transition: 0.3s;"
+                    onclick="this.parentElement.previousElementSibling.scrollTo({left: this.parentElement.previousElementSibling.scrollWidth, behavior: 'smooth'}); this.style.borderColor='var(--primary)'; this.previousElementSibling.style.borderColor='transparent';">
+            </div>
+        </div>
+        <div class="product-hero-content">
+            <h1>Hand-churned Gir Cow A2 Ghee</h1>
+            <div class="product-reviews">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                <span>Reviews (8)</span>
+            </div>
+            <p style="color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.7;">
+                Comes with an exquisite taste, a delightful aroma and wholesome granular structure. Made using the
+                age-old bilona method, this Ghee does wonders in improving the overall nourishment of the body and the
+                mind.
+            </p>
+            <div class="product-variants" style="margin-bottom: 1.5rem;">
+                <p style="font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-dark);">Size</p>
+                <div style="display: flex; gap: 1rem;">
+                    <label class="variant-option">
+                        <input type="radio" name="ghee-size" value="500g" onchange="updateGheePrice('500g')"
+                            style="display: none;">
+                        <span class="variant-btn">500g</span>
+                    </label>
+                    <label class="variant-option">
+                        <input type="radio" name="ghee-size" value="1kg" onchange="updateGheePrice('1kg')" checked
+                            style="display: none;">
+                        <span class="variant-btn">1 KG</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="product-price" id="ghee-price-display">
+                <s>₹3,490.00</s> ₹3,315.00 <span
+                    style="font-size: 1rem; color: var(--text-light); font-weight: 400;">(5% off)</span>
+            </div>
+            <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem;">(Inclusive of taxes)</p>
+
+            <div class="product-add-cart">
+                <input type="number" value="1" min="1">
+                <button id="ghee-add-btn" class="btn btn-primary"
+                    style="flex: 1; border-radius: 8px; font-size: 1.2rem; background: transparent; border: 2px solid var(--primary); color: var(--primary);"
+                    onclick="addToCart({id: 'ghee_1kg', title: 'Hand-churned Gir Cow A2 Ghee (1 KG)', price: 3315, image: 'images/gm.png'})">Add
+                    to cart</button>
+                <button id="ghee-buy-btn" class="btn btn-primary"
+                    style="flex: 1; border-radius: 8px; font-size: 1.2rem;"
+                    onclick="addToCart({id: 'ghee_1kg', title: 'Hand-churned Gir Cow A2 Ghee (1 KG)', price: 3315, image: 'images/gm.png'}); window.location.href='checkout.html';">Buy
+                    Now</button>
+            </div>
+
+            <script>
+                function updateGheePrice(size) {
+                    const priceDisplay = document.getElementById('ghee-price-display');
+                    const addToCartBtn = document.getElementById('ghee-add-btn');
+                    const buyNowBtn = document.getElementById('ghee-buy-btn');
+
+                    if (size === '500g') {
+                        priceDisplay.innerHTML = '<s>₹1,780.00</s> ₹1,690.00 <span style="font-size: 1rem; color: var(--text-light); font-weight: 400;">(5% off)</span>';
+                        addToCartBtn.setAttribute('onclick', "addToCart({id: 'ghee_500g', title: 'Hand-churned Gir Cow A2 Ghee (500g)', price: 1690, image: 'images/gm.png'})");
+                        buyNowBtn.setAttribute('onclick', "addToCart({id: 'ghee_500g', title: 'Hand-churned Gir Cow A2 Ghee (500g)', price: 1690, image: 'images/gm.png'}); window.location.href='checkout.html';");
+                    } else {
+                        priceDisplay.innerHTML = '<s>₹3,490.00</s> ₹3,315.00 <span style="font-size: 1rem; color: var(--text-light); font-weight: 400;">(5% off)</span>';
+                        addToCartBtn.setAttribute('onclick', "addToCart({id: 'ghee_1kg', title: 'Hand-churned Gir Cow A2 Ghee (1 KG)', price: 3315, image: 'images/gm.png'})");
+                        buyNowBtn.setAttribute('onclick', "addToCart({id: 'ghee_1kg', title: 'Hand-churned Gir Cow A2 Ghee (1 KG)', price: 3315, image: 'images/gm.png'}); window.location.href='checkout.html';");
+                    }
+                }
+            </script>
+
+            <div class="product-features">
+                <div class="product-feature">
+                    <i class="fas fa-truck"></i> Free shipping PAN India
+                </div>
+                <div class="product-feature">
+                    <i class="fas fa-clock"></i> Usually ships within 48 hours
+                </div>
+                <div class="product-feature">
+                    <i class="fas fa-leaf"></i> Ancient elixir of life
+                </div>
+            </div>
+
+            <p
+                style="font-size: 0.95rem; color: var(--text-main); font-style: italic; background: rgba(212, 163, 115, 0.1); padding: 1rem; border-left: 4px solid var(--accent);">
+                ‘The first and the most essential of all foods’, according to the Vedas this golden ghee’s medicinal and
+                culinary importance along with its spiritual benefits makes it a true superfood.
+            </p>
+        </div>
+    </section>
+
+    <!-- Shat Dhaut Ghrit -->
+    <section class="product-hero" style="background: var(--bg-light);">
+        <div class="product-hero-content">
+            <h2 style="color: var(--primary); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;">Learn
+                more about our unique</h2>
+            <h1 style="font-size: 3rem; line-height: 1.1; margin-bottom: 1.5rem;">Full Moon <span
+                    style="color: var(--accent);">Shat Dhaut Ghrit</span></h1>
+            <p style="color: var(--text-main); line-height: 1.7; font-size: 1.1rem; margin-bottom: 2rem;">
+                Ayurveda calls it “The Supreme Skin Elixir”. Derived from over 5000-year-old ancient ayurvedic text
+                Charaka Samhita, wherein pure ghee is washed 100 times in a sacred copper vessel in the aura of divine
+                mantra chants on a full moon day.
+            </p>
+            <div class="product-features" style="background: var(--white);">
+                <div class="product-feature">
+                    <i class="fas fa-tint"></i> A great moisturizer
+                </div>
+                <div class="product-feature">
+                    <i class="fas fa-sun"></i> Effectively reduces pigmentation
+                </div>
+                <div class="product-feature">
+                    <i class="fas fa-spa"></i> Anti-aging and anti-wrinkle
+                </div>
+                <div class="product-feature">
+                    <i class="fas fa-hand-sparkles"></i> Cures psoriasis, eczema & acne
+                </div>
+            </div>
+            <div class="product-price">
+                <s>₹1,690.00</s> ₹1,521.00 <span
+                    style="font-size: 1rem; color: var(--text-light); font-weight: 400;">(10% off)</span>
+            </div>
+            <div class="product-add-cart">
+                <button class="btn btn-primary"
+                    style="flex: 1; border-radius: 8px; font-size: 1.2rem; background: transparent; border: 2px solid var(--primary); color: var(--primary);"
+                    onclick="addToCart({id: 'shat_ghrit', title: 'Full Moon Shat Dhaut Ghrit', price: 1521, image: 'images/butter.jpg'})">Add
+                    to cart</button>
+                <button class="btn btn-primary" style="flex: 1; border-radius: 8px; font-size: 1.2rem;"
+                    onclick="addToCart({id: 'shat_ghrit', title: 'Full Moon Shat Dhaut Ghrit', price: 1521, image: 'images/butter.jpg'}); window.location.href='checkout.html';">Buy
+                    Now</button>
+            </div>
+        </div>
+        <div class="product-hero-media">
+            <img src="images/butter.jpg" alt="Shat Dhaut Ghrit">
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="section-title">
+            <h2>The Benefits of Our Gir Cow <span style="color: var(--primary);">A2 Ghee</span></h2>
+            <p>Helps keep the big three diseases at bay</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <i class="fas fa-shield-virus"></i>
+                <h3>Cancer</h3>
+                <p>Being one of the best sources of a powerful compound called CLA (Conjugated Linoleic Acid) which as a
+                    very powerful anticarcinogen. It brings down inflammatory compounds and makes the cancer cells to
+                    self-destruct.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-tint"></i>
+                <h3>Diabetes</h3>
+                <p>Adding pure ghee to food lowers its glycaemic index, which in turn helps to regulate blood sugar
+                    levels. Its regular consumption helps to improve the functioning of the gut hormone and insulin
+                    secretion.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Cardiac Arrest</h3>
+                <p>The high level of Omega-3 fatty acids present in this ghee is very beneficial for cardiovascular
+                    health. It helps combat cholesterol levels by extracting them out of the bloodstream.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How To Consume -->
+    <section class="consume-section">
+        <div class="section-title" style="text-align: center; margin-bottom: 4rem;">
+            <h2>How can we <span style="color: var(--accent);">consume</span> this ghee?</h2>
+            <p>To get the maximum benefits</p>
+        </div>
+        <div class="consume-grid">
+            <div class="consume-card">
+                <h3><i class="fas fa-utensils"></i> Oral Way</h3>
+                <p>Consuming about 5-10 ml of pure Gir Cow A2 Ghee in the morning just before your 1st meal will do
+                    wonders for your gut health as it lubricates the alimentary canal and ensures easy passage of food.
+                    You can also consume this ghee with your morning cup of tea or with warm water. It can also be
+                    consumed at night 1 hour before going to bed along with a warm glass of A2 milk.</p>
+            </div>
+            <div class="consume-card"
+                style="background: var(--bg-light); color: var(--primary-dark); border: 1px solid var(--border);">
+                <h3 style="color: var(--primary-dark);"><i class="fas fa-lungs"></i> Nasal Way</h3>
+                <p style="color: var(--text-main);">2-3 drops of this Ghee can be put in both the nostrils during the
+                    day time or after your morning exercise. This will help in curing problems above the shoulders
+                    related to the eyes, throat, ears, nose and the brain. It will also help in improving the
+                    concentration and memory function of the brain. Will work magically for children as well as adults.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Responsibility Section -->
+    <section class="responsibility-section">
+        <div class="section-title" style="position: relative; z-index: 1;">
+            <h2 style="color: var(--white);">Bringing a culture of <span
+                    style="color: var(--accent);">responsibility</span></h2>
+            <p
+                style="color: #e9ecef; max-width: 700px; margin: 1rem auto; text-transform: none; font-size: 1.1rem; letter-spacing: normal;">
+                At Kinaya Farms, we strive to use the best technology and resources to do things in ways that are good
+                for our planet. Here are a few things:</p>
+        </div>
+        <div class="resp-grid">
+            <div class="resp-card">
+                <i class="fas fa-seedling" style="font-size: 2.5rem; color: var(--white);"></i>
+                <h3>Regenerative Organic Farming</h3>
+                <p style="margin-top: 1rem; color: #e9ecef; font-size: 0.9rem;">We aim to put carbon back into the soil
+                    through regenerative organic farming. Nourishing the soil that nourishes us.</p>
+            </div>
+            <div class="resp-card">
+                <i class="fas fa-cow" style="font-size: 2.5rem; color: var(--white);"></i>
+                <h3>Conscious Cattle Rearing</h3>
+                <p style="margin-top: 1rem; color: #e9ecef; font-size: 0.9rem;">Our Gir cows are treated with the utmost
+                    love and care, allowing calves their due share before hand milking.</p>
+            </div>
+            <div class="resp-card">
+                <i class="fas fa-cloud-rain" style="font-size: 2.5rem; color: var(--white);"></i>
+                <h3>Rainwater Harvesting</h3>
+                <p style="margin-top: 1rem; color: #e9ecef; font-size: 0.9rem;">Each drop counts. We capture and store
+                    rainwater to sustain our agricultural needs responsibly.</p>
+            </div>
+            <div class="resp-card">
+                <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--white);"></i>
+                <h3>Self-reliant for fire gas</h3>
+                <p style="margin-top: 1rem; color: #e9ecef; font-size: 0.9rem;">Using biogas produced from cow dung to
+                    fuel our traditional cooking processes, reducing our carbon footprint.</p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="section-title" style="text-align: center; margin-bottom: 3rem;">
+            <h2>Frequently Asked <span style="color: var(--primary);">Questions</span></h2>
+        </div>
+
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">What is the shelf life of this ghee? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Pure hand-churned Ghee made using this process has no shelf life as such. The older
+                it is the better it gets. It’s medicinal properties get enhanced with age. However, for regular
+                consumption like with food its good upto two years.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">How should we store this ghee? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Store it in a cool, dry place away from direct sunlight. There is no need to
+                refrigerate it. Ensure you always use a clean, dry spoon.</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">Why is this hand-churned A2 ghee better than home-made ghee? <i
+                    class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">It is made using the traditional wooden bilona churning method in a bi-directional
+                motion from curd, not cream. This preserves all the medicinal enzymes, making it far superior to
+                cream-based home-made ghee.</div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="products-section">
+        <div class="section-title">
+            <h2>All <span style="color: var(--primary);">Products</span></h2>
+            <p>From our Soil to your Table, filled with stories.</p>
+        </div>
+
+        <div class="category-filter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="dairy">Dairy</button>
+            <button class="filter-btn" data-filter="beauty">Beauty</button>
+            <button class="filter-btn" data-filter="oils">Oils</button>
+        </div>
+
+        <div class="products-grid" id="products-container">
+            <!-- Product 1 -->
+            <div class="product-card" data-category="dairy" style="transform-style: preserve-3d;">
+                <div class="product-image"
+                    style="background-image: url('images/ghee.jpg'); background-size: cover; background-position: center; transform: translateZ(30px);">
+                    <span class="organic-tag" style="transform: translateZ(40px); background: var(--primary);">Best
+                        Seller</span>
+                </div>
+                <div class="product-info" style="transform: translateZ(30px);">
+                    <span class="product-category">Dairy</span>
+                    <h3 class="product-title">Gir Cow A2 Milk Powder</h3>
+                    <div class="product-price">₹575.00 <span>/ 500g</span></div>
+                    <div class="product-actions" style="margin-top: 1rem;">
+                        <button class="add-to-cart"
+                            onclick="addToCart({id: 'milk_powder', title: 'Gir Cow A2 Milk Powder', price: 575, image: 'images/ghee.jpg'})"
+                            style="width: 100%;">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="buy-now"
+                            onclick="addToCart({id: 'milk_powder', title: 'Gir Cow A2 Milk Powder', price: 575, image: 'images/ghee.jpg'}); window.location.href='checkout.html';"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card" data-category="beauty" style="transform-style: preserve-3d;">
+                <div class="product-image"
+                    style="background-image: url('images/butter.jpg'); background-size: cover; background-position: center; transform: translateZ(30px);">
+                    <span class="organic-tag" style="transform: translateZ(40px); background: var(--accent);">10%
+                        OFF</span>
+                </div>
+                <div class="product-info" style="transform: translateZ(30px);">
+                    <span class="product-category">Beauty</span>
+                    <h3 class="product-title">Full Moon Shat Dhaut Ghrit</h3>
+                    <div class="product-price">₹1,521.00 <span>/ 50g</span></div>
+                    <div class="product-actions" style="margin-top: 1rem;">
+                        <button class="add-to-cart"
+                            onclick="addToCart({id: 'shat_ghrit', title: 'Full Moon Shat Dhaut Ghrit', price: 1521, image: 'images/butter.jpg'})"
+                            style="width: 100%;">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="buy-now"
+                            onclick="addToCart({id: 'shat_ghrit', title: 'Full Moon Shat Dhaut Ghrit', price: 1521, image: 'images/butter.jpg'}); window.location.href='checkout.html';"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card" data-category="dairy" style="transform-style: preserve-3d;">
+                <div class="product-image"
+                    style="background-image: url('images/ghee.jpg'); background-size: cover; background-position: center; transform: translateZ(30px);">
+                    <span class="organic-tag" style="transform: translateZ(40px); background: var(--accent);">20%
+                        OFF</span>
+                </div>
+                <div class="product-info" style="transform: translateZ(30px);">
+                    <span class="product-category">Dairy</span>
+                    <h3 class="product-title">Full Moon Gir Cow A2 Bilona Ghee</h3>
+                    <div class="product-price">₹1,992.00 <span>/ 500g</span></div>
+                    <div class="product-actions" style="margin-top: 1rem;">
+                        <button class="add-to-cart"
+                            onclick="addToCart({id: 'full_ghee', title: 'Full Moon Gir Cow A2 Bilona Ghee', price: 1992, image: 'images/ghee.jpg'})"
+                            style="width: 100%;">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="buy-now"
+                            onclick="addToCart({id: 'full_ghee', title: 'Full Moon Gir Cow A2 Bilona Ghee', price: 1992, image: 'images/ghee.jpg'}); window.location.href='checkout.html';"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card" data-category="beauty" style="transform-style: preserve-3d;">
+                <div class="product-image"
+                    style="background-image: url('images/honey.jpg'); background-size: cover; background-position: center; transform: translateZ(30px);">
+                    <span class="organic-tag" style="transform: translateZ(40px); background: var(--accent);">20%
+                        OFF</span>
+                </div>
+                <div class="product-info" style="transform: translateZ(30px);">
+                    <span class="product-category">Beauty</span>
+                    <h3 class="product-title">Ghee Lip Balm</h3>
+                    <div class="product-price">₹552.00 <span>/ 10g</span></div>
+                    <div class="product-actions" style="margin-top: 1rem;">
+                        <button class="add-to-cart"
+                            onclick="addToCart({id: 'lip_balm', title: 'Ghee Lip Balm', price: 552, image: 'images/honey.jpg'})"
+                            style="width: 100%;">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="buy-now"
+                            onclick="addToCart({id: 'lip_balm', title: 'Ghee Lip Balm', price: 552, image: 'images/honey.jpg'}); window.location.href='checkout.html';"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card" data-category="oils" style="transform-style: preserve-3d;">
+                <div class="product-image"
+                    style="background-image: url('images/honey.jpg'); background-size: cover; background-position: center; transform: translateZ(30px);">
+                    <span class="organic-tag" style="transform: translateZ(40px); background: var(--accent);">4%
+                        OFF</span>
+                </div>
+                <div class="product-info" style="transform: translateZ(30px);">
+                    <span class="product-category">Oils</span>
+                    <h3 class="product-title">Wood Pressed Groundnut Oil</h3>
+                    <div class="product-price">₹575.00 <span>/ 1 Liter</span></div>
+                    <div class="product-actions" style="margin-top: 1rem;">
+                        <button class="add-to-cart"
+                            onclick="addToCart({id: 'groundnut', title: 'Wood Pressed Groundnut Oil', price: 575, image: 'images/honey.jpg'})"
+                            style="width: 100%;">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="buy-now"
+                            onclick="addToCart({id: 'groundnut', title: 'Wood Pressed Groundnut Oil', price: 575, image: 'images/honey.jpg'}); window.location.href='checkout.html';"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card" data-category="oils" style="transform-style: preserve-3d;">
+                <div class="product-image"
+                    style="background-image: url('images/honey.jpg'); background-size: cover; background-position: center; transform: translateZ(30px);">
+                    <span class="organic-tag" style="transform: translateZ(40px); background: var(--accent);">15%
+                        OFF</span>
+                </div>
+                <div class="product-info" style="transform: translateZ(30px);">
+                    <span class="product-category">Oils</span>
+                    <h3 class="product-title">Wood Pressed White Sesame Oil</h3>
+                    <div class="product-price">₹595.00 <span>/ 1 Liter</span></div>
+                    <div class="product-actions" style="margin-top: 1rem;">
+                        <button class="add-to-cart"
+                            onclick="addToCart({id: 'sesame', title: 'Wood Pressed White Sesame Oil', price: 595, image: 'images/honey.jpg'})"
+                            style="width: 100%;">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="buy-now"
+                            onclick="addToCart({id: 'sesame', title: 'Wood Pressed White Sesame Oil', price: 595, image: 'images/honey.jpg'}); window.location.href='checkout.html';"
+                            style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-grid">
+            <div class="about-images">
+                <img src="images/gauranga_cows.png" alt="Cows on Farm" class="about-img main-img">
+                <img src="images/gauranga_farmer_hands.png" alt="Farmer Hands" class="about-img sub-img">
+            </div>
+            <div class="about-content">
+                <h2>The Gauranga Philosophy</h2>
+                <p>At Gauranga Organic Farm, we believe that food should grow as nature intended. By avoiding all
+                    harmful
+                    chemicals and relying entirely on organic compost, cow dung manure, and traditional Vedic farming
+                    techniques, we heal the soil while producing highly nutritious crops.</p>
+                <p>Every vegetable, fruit, and dairy product you buy supports local farmers and helps build a
+                    sustainable
+                    future for our children.</p>
+                <a href="#" class="btn btn-primary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3><i class="fas fa-seedling"></i> Gauranga Organic Farm</h3>
+                <p>Bringing you the healthiest, chemical-free food directly from Mother Earth.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#shop">Shop</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col" id="contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Vrindavan, India</p>
+                <p><i class="fas fa-envelope"></i> rahulk200312@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +91 6200057077</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Gauranga Organic Farm. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/916200057077?text=Hello%20Gauranga%20Organic%20Farm!%20I%20would%20like%20to%20know%20more%20about%20your%20pure%20organic%20and%20A2%20dairy%20products."
+        class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"
+            style="width: 35px; height: 35px;">
+            <path
+                d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+        </svg>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <script src="script.js?v=14"></script>
+    <script src="pwa.js"></script>
+</body>
+
+</html>
