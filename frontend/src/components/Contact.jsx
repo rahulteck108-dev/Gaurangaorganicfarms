@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { API_BASE_URL } from '../api';
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({ name: '', email: '', mobile: '', message: '' });
 
   const handleChange = (e) => {
@@ -10,16 +12,21 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Save to Database
+    setError(null);
+
     try {
-      await fetch('http://localhost:8080/api/contact', {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
+      if (!response.ok) {
+        throw new Error('Unable to send your message. Please try again.');
+      }
     } catch (error) {
-      console.error("Error saving message:", error);
+      console.error('Error saving message:', error);
+      setError(error.message || 'Unable to send your message. Please try again.');
+      return;
     }
 
     setSubmitted(true);
@@ -68,6 +75,11 @@ function Contact() {
             <div style={{ background: '#dcf8c6', color: '#075e54', padding: '15px', borderRadius: '8px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <i className="fas fa-check-circle" style={{ fontSize: '1.2rem' }}></i>
               <span><strong>Message sent!</strong> We'll get back to you soon.</span>
+            </div>
+          )}
+          {error && (
+            <div role="alert" style={{ color: 'red', marginBottom: '1rem' }}>
+              {error}
             </div>
           )}
           <form className="contact-form" onSubmit={handleSubmit}>

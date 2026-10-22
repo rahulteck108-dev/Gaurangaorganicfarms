@@ -52,6 +52,15 @@ function initializeDB() {
             FOREIGN KEY (product_id) REFERENCES products(id)
         )`);
 
+        db.run(`CREATE TABLE IF NOT EXISTS contact_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            mobile TEXT NOT NULL,
+            message TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`);
+
         // Seed Products if table is empty
         db.get('SELECT COUNT(*) as count FROM products', (err, row) => {
             if (err) {

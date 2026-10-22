@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './WhatsAppChatWidget.css';
+import { API_BASE_URL } from '../api';
 
 const WhatsAppChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,7 @@ const WhatsAppChatWidget = () => {
     setIsTyping(true);
 
     try {
-      const response = await fetch('http://localhost:8080/api/chat', {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

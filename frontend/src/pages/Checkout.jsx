@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE_URL } from '../api';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext';
@@ -83,19 +84,29 @@ function Checkout() {
       return;
     }
 
+    const storedUser = JSON.parse(localStorage.getItem('gauranga_user') || '{}');
+    const orderPayload = {
+      userId: storedUser?.user?.id ?? null,
+      items: cartItems.map(({ id, quantity, price }) => ({ id, quantity, price })),
+      totalAmount: getCartTotal(),
+      formData
+    };
+
     try {
-      const response = await fetch('http://localhost:8080/api/orders', {
+      const response = await fetch(`${API_BASE_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formData, cartItems })
+        body: JSON.stringify(orderPayload)
       });
-      
+
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         alert(`Order placed successfully!\nThank you for shopping with Gauranga Organic Farm.\nShipping to: ${formData.address}`);
         clearCart();
         navigate('/');
       } else {
-        alert("There was an error placing your order. Please try again.");
+        alert(data.error || "There was an error placing your order. Please try again.");
       }
     } catch (error) {
       console.error("Error placing order:", error);
