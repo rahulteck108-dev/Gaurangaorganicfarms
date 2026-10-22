@@ -112,7 +112,47 @@ app.post('/api/auth/reset-password', async (req, res) => {
         res.status(500).json({ error: 'Unable to reset password.' });
     }
 });
+// Order alert mail (Resend, HTTPS API)
+const escapeHtml = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[c]));
 
+async function sendOrderAlert({ orderId, items, total, formData }) {
+    if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
+        console.log('Order alert skipped: mail env variables missing.');
+        return;
+    }
+    try {
+        const rows = (items || []).map(i =>
+            `<li>${escapeHtml(i.name || i.title || 'Item')} x ${escapeHtml(i.quantity || i.qty || 1)}` +
+            (i.price ? ` - Rs ${escapeHtml(i.price)}` : '') + `</li>`
+        ).join('');
+        const customer = escapeHtml(JSON.stringify(formData || {}));
+
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: 'Gauranga Organic Farm <onboarding@resend.dev>',
+                to: [process.env.OWNER_EMAIL],
+                subject: `New order #${orderId ?? ''} - Rs ${total ?? ''}`,
+                html: `<h2>New order received</h2>
+                       <p><b>Order ID:</b> ${escapeHtml(orderId)}</p>
+                       <p><b>Total:</b> Rs ${escapeHtml(total)}</p>
+                       <ul>${rows}</ul>
+                       <p><b>Customer details:</b> ${customer}</p>`
+            })
+        });
+        const result = await response.json();
+        if (!response.ok) console.error('Resend error:', result);
+        else console.log('Order alert sent:', result.id);
+    } catch (err) {
+        console.error('Order alert failed:', err.message);
+    }
+}
 // 4. Create Order (Checkout)
 app.post('/api/orders', (req, res) => {
     const { userId, items: submittedItems, cartItems, totalAmount: submittedTotal, formData } = req.body;
@@ -181,6 +221,7 @@ app.post('/api/orders', (req, res) => {
                             db.run('ROLLBACK');
                             return res.status(500).json({ error: 'Unable to place order.' });
                         }
+                     sendOrderAlert({ orderId, items, total: totalAmount, formData });
                         res.status(201).json({
                             message: 'Order placed successfully',
                             orderId,
