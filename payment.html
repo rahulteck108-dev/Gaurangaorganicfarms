@@ -378,7 +378,7 @@
             let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
             try {
-                const response = await fetch('http://localhost:3000/api/orders', {
+               const response = await fetch('https://https://gaurangaorganicfarms.onrender.com/api/orders', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId: null, items: cart, totalAmount: total })

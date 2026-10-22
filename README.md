@@ -19,4 +19,4 @@ before relying on this service for production data.
 
 For a separately hosted React frontend, set the build-time
 `VITE_API_BASE_URL` variable to the Render service URL and rebuild the
-frontend. Local development defaults to `http://localhost:5000`.
+frontend. Local development defaults to `https://gaurangaorganicfarms.onrender.com`.
