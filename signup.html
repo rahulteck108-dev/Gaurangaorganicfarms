@@ -15,7 +15,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
 </head>
 
 <body class="auth-page">
@@ -188,7 +188,9 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    alert("Account created successfully! Welcome to Gauranga Organic Farm.");
+                    alert(data.emailSent
+                        ? "Account created successfully! A welcome email has been sent to your email address."
+                        : "Account created successfully, but the welcome email could not be sent. Please contact us if you need help.");
                     window.location.href = "index.html";
                 } else {
                     alert("Error: " + (data.error || "Failed to create account"));
@@ -197,12 +199,9 @@
                 }
             } catch (err) {
                 console.error("Signup error:", err);
-                alert("Network error, could not connect to server. Simulating success for now.");
-                // Fallback for demo if server not running
-                setTimeout(() => {
-                    alert("Account created successfully! Welcome to Gauranga Organic Farm.");
-                    window.location.href = "index.html";
-                }, 1000);
+                alert("Network error: your account could not be created. Please try again.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         }
     </script>

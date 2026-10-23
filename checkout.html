@@ -15,7 +15,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
     <style>
         .checkout-container {
             max-width: 800px;
@@ -138,7 +138,15 @@
                 <label>Full Name</label>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Enter your full name" required>
+                    <input type="text" name="name" placeholder="Enter your full name" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
                 </div>
             </div>
 
@@ -146,7 +154,7 @@
                 <label>Mobile Number</label>
                 <div class="input-field">
                     <i class="fas fa-phone"></i>
-                    <input type="tel" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+                    <input type="tel" name="phone" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
                 </div>
             </div>
 
@@ -154,7 +162,7 @@
                 <label>Street Address</label>
                 <div class="input-field">
                     <i class="fas fa-home"></i>
-                    <input type="text" placeholder="123 Farm Road, Sector 4" required>
+                    <input type="text" name="address" placeholder="123 Farm Road, Sector 4" required>
                 </div>
             </div>
 
@@ -163,21 +171,21 @@
                     <label>City / Town</label>
                     <div class="input-field">
                         <i class="fas fa-city"></i>
-                        <input type="text" placeholder="Vrindavan" required>
+                        <input type="text" name="city" placeholder="Vrindavan" required>
                     </div>
                 </div>
                 <div class="input-group">
                     <label>Pincode</label>
                     <div class="input-field">
                         <i class="fas fa-map-pin"></i>
-                        <input type="text" placeholder="281121" required pattern="[0-9]{6}">
+                        <input type="text" name="zip" placeholder="281121" required pattern="[0-9]{6}">
                     </div>
                 </div>
             </div>
 
             <div class="input-group" style="margin-top: 1.5rem;">
                 <label>Delivery Instructions (Optional)</label>
-                <textarea rows="3"
+                <textarea name="instructions" rows="3"
                     style="width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font-body);"
                     placeholder="Leave at the front door..."></textarea>
             </div>
@@ -204,7 +212,8 @@
                 return;
             }
 
-            // In a real app, save address details to localStorage or state here
+            const shipping = Object.fromEntries(new FormData(e.currentTarget).entries());
+            sessionStorage.setItem('gauranga_checkout_shipping', JSON.stringify(shipping));
             window.location.href = "payment.html";
         }
     </script>

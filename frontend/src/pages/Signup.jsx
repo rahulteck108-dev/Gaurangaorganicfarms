@@ -32,7 +32,9 @@ function Signup() {
       const data = await response.json();
       
       if (response.ok) {
-        alert('Account created successfully! Please login.');
+        alert(data.emailSent
+          ? 'Account created successfully! A welcome email has been sent to your email address. Please login.'
+          : 'Account created successfully, but the welcome email could not be sent. Please contact us if you need help.');
         navigate('/login');
       } else {
         setError(data.error || 'Failed to create account.');

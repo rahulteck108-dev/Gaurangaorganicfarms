@@ -15,7 +15,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
     <style>
         .checkout-container {
             max-width: 1000px;
@@ -378,16 +378,34 @@
             let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
             try {
-               const response = await fetch('https://https://gaurangaorganicfarms.onrender.com/api/orders', {
+               const shipping = JSON.parse(sessionStorage.getItem('gauranga_checkout_shipping') || 'null');
+               if (!shipping) {
+                   alert("Please enter your delivery details before placing the order.");
+                   window.location.href = "checkout.html";
+                   return;
+               }
+
+               const storedUser = JSON.parse(localStorage.getItem('gauranga_user') || '{}');
+               const response = await fetch('https://gaurangaorganicfarms.onrender.com/api/orders', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId: null, items: cart, totalAmount: total })
+                    body: JSON.stringify({
+                        userId: storedUser?.user?.id ?? null,
+                        items: cart.map(({ id, title, quantity, price }) => ({ id, title, quantity, price })),
+                        totalAmount: total,
+                        formData: shipping
+                    })
                 });
 
                 if (response.ok) {
-                    alert("🎉 Order Placed Successfully! Your fresh organic goods will be delivered shortly.");
+                    const data = await response.json();
+                    const emailMessage = data.emailSent
+                        ? `A confirmation email was sent to ${shipping.email}.`
+                        : "Your order is placed, but the confirmation email could not be sent. Please contact us if you need help.";
+                    alert(`Order placed successfully! Your fresh organic goods will be delivered shortly.\n${emailMessage}`);
                     localStorage.removeItem('cart');
                     localStorage.removeItem('cartCount');
+                    sessionStorage.removeItem('gauranga_checkout_shipping');
                     window.location.href = "index.html";
                 } else {
                     const data = await response.json();
@@ -397,14 +415,9 @@
                 }
             } catch (err) {
                 console.error("Payment error:", err);
-                alert("Network error, could not connect to server. Simulating success for now.");
-                // Fallback for demo if server not running
-                setTimeout(() => {
-                    alert("🎉 Order Placed Successfully! Your fresh organic goods will be delivered shortly.");
-                    localStorage.removeItem('cart');
-                    localStorage.removeItem('cartCount');
-                    window.location.href = "index.html";
-                }, 1000);
+                alert("Network error: the order could not be confirmed. Please try again.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         }
 

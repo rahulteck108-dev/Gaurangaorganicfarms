@@ -35,6 +35,9 @@ function Login() {
       if (response.ok) {
         // Here we would typically save the JWT token or user details
         localStorage.setItem('gauranga_user', JSON.stringify(data));
+        if (!data.emailSent) {
+          alert('You are signed in, but the sign-in notification email could not be sent.');
+        }
         navigate('/');
       } else {
         setError(data.error || 'Invalid credentials.');

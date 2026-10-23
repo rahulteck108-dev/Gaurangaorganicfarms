@@ -65,7 +65,7 @@ function Contact() {
             <i className="fas fa-envelope"></i>
             <div>
               <h4>Email Address</h4>
-              <p>rahulteck108@gmail.com</p>
+              <p>gaurangaorganicfarm@gmail.com</p>
             </div>
           </div>
         </div>

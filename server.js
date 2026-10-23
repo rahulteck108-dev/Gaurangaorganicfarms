@@ -32,28 +32,100 @@ app.get('/api/products', (req, res) => {
     });
 });
 
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[character]));
+}
+
+async function sendEmail({ to, subject, html }) {
+    if (!process.env.RESEND_API_KEY || !process.env.MAIL_FROM) {
+        console.error('Email not sent: configure RESEND_API_KEY and MAIL_FROM on the backend.');
+        return false;
+    }
+
+    try {
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from: process.env.MAIL_FROM,
+                to: [to],
+                subject,
+                html
+            }),
+            signal: AbortSignal.timeout(10000)
+        });
+
+        if (!response.ok) {
+            const result = await response.json().catch(() => ({}));
+            console.error(`Email provider rejected message (${response.status}):`, result.message || result.name || 'Unknown provider error');
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Email provider request failed:', error.message);
+        return false;
+    }
+}
+
+async function sendWelcomeEmail({ fullname, email }) {
+    return sendEmail({
+        to: email,
+        subject: 'Welcome to Gauranga Organic Farm',
+        html: `<h2>Welcome, ${escapeHtml(fullname)}!</h2>
+               <p>Your Gauranga Organic Farm account has been created successfully.</p>
+               <p>Thank you for joining our organic community.</p>`
+    });
+}
+
+async function sendLoginNotice({ fullname, email }) {
+    return sendEmail({
+        to: email,
+        subject: 'Sign-in to your Gauranga Organic Farm account',
+        html: `<h2>Hello, ${escapeHtml(fullname)}.</h2>
+               <p>Your Gauranga Organic Farm account was just signed in to.</p>
+               <p>If this wasn't you, please reset your password and contact our support team.</p>`
+    });
+}
+
 // 2. Signup
 app.post('/api/auth/signup', async (req, res) => {
-    const { fullname, email, mobile, password } = req.body;
+    const { fullname, mobile, password } = req.body;
+    const email = typeof req.body.email === 'string' ? req.body.email.trim() : '';
     if (!fullname || !email || !mobile || !password) {
         return res.status(400).json({ error: 'All fields are required.' });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ error: 'Enter a valid email address.' });
     }
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         db.run('INSERT INTO users (fullname, email, mobile, password) VALUES (?, ?, ?, ?)', 
             [fullname, email, mobile, hashedPassword], 
-            function(err) {
+            async function(err) {
                 if (err) {
                     if (err.message.includes('UNIQUE constraint failed')) {
                         return res.status(400).json({ error: 'Email already exists.' });
                     }
+                    console.error('Signup database insert failed:', err.message);
                     return res.status(500).json({ error: err.message });
                 }
-                res.status(201).json({ message: 'User created successfully', id: this.lastID });
+                const emailSent = await sendWelcomeEmail({ fullname, email });
+                res.status(201).json({ message: 'User created successfully', id: this.lastID, emailSent });
             }
         );
     } catch (err) {
+        console.error('Signup failed:', err.message);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -81,7 +153,8 @@ app.post('/api/auth/login', (req, res) => {
         }
 
         const { password: _, ...userData } = user;
-        res.json({ message: 'Login successful', user: userData });
+        const emailSent = await sendLoginNotice({ fullname: user.fullname, email: user.email });
+        res.json({ message: 'Login successful', user: userData, emailSent });
     });
 });
 
@@ -112,46 +185,41 @@ app.post('/api/auth/reset-password', async (req, res) => {
         res.status(500).json({ error: 'Unable to reset password.' });
     }
 });
-// Order alert mail (Resend, HTTPS API)
-const escapeHtml = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-}[c]));
+async function sendOrderEmails({ orderId, items, total, formData }) {
+    const rows = items.map(item =>
+        `<li>${escapeHtml(item.title || `Product #${item.id}`)} &times; ${escapeHtml(item.quantity)} — ₹${escapeHtml(item.price)}</li>`
+    ).join('');
+    const shippingDetails = ['name', 'email', 'phone', 'address', 'city', 'state', 'zip']
+        .filter(key => formData[key])
+        .map(key => `<p><b>${escapeHtml(key)}:</b> ${escapeHtml(formData[key])}</p>`)
+        .join('');
+    const customerEmail = formData.email.trim();
 
-async function sendOrderAlert({ orderId, items, total, formData }) {
-    if (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL) {
-        console.log('Order alert skipped: mail env variables missing.');
-        return;
-    }
-    try {
-        const rows = (items || []).map(i =>
-            `<li>${escapeHtml(i.name || i.title || 'Item')} x ${escapeHtml(i.quantity || i.qty || 1)}` +
-            (i.price ? ` - Rs ${escapeHtml(i.price)}` : '') + `</li>`
-        ).join('');
-        const customer = escapeHtml(JSON.stringify(formData || {}));
+    const customerEmailSent = await sendEmail({
+        to: customerEmail,
+        subject: `Your Gauranga Organic Farm order #${orderId} is placed`,
+        html: `<h2>Thank you for your order, ${escapeHtml(formData.name || 'Customer')}!</h2>
+               <p>Your order has been placed successfully.</p>
+               <p><b>Order ID:</b> ${escapeHtml(orderId)}</p>
+               <p><b>Order total:</b> ₹${escapeHtml(total)}</p>
+               <h3>Items</h3><ul>${rows}</ul>
+               <h3>Delivery details</h3>${shippingDetails}`
+    });
 
-        const response = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                from: 'Gauranga Organic Farm <onboarding@resend.dev>',
-                to: [process.env.OWNER_EMAIL],
-                subject: `New order #${orderId ?? ''} - Rs ${total ?? ''}`,
-                html: `<h2>New order received</h2>
-                       <p><b>Order ID:</b> ${escapeHtml(orderId)}</p>
-                       <p><b>Total:</b> Rs ${escapeHtml(total)}</p>
-                       <ul>${rows}</ul>
-                       <p><b>Customer details:</b> ${customer}</p>`
-            })
+    let ownerEmailSent = false;
+    if (process.env.OWNER_EMAIL) {
+        ownerEmailSent = await sendEmail({
+            to: process.env.OWNER_EMAIL,
+            subject: `New order #${orderId} - ₹${total}`,
+            html: `<h2>New order received</h2>
+                   <p><b>Order ID:</b> ${escapeHtml(orderId)}</p>
+                   <p><b>Total:</b> ₹${escapeHtml(total)}</p>
+                   <ul>${rows}</ul>
+                   <h3>Customer delivery details</h3>${shippingDetails}`
         });
-        const result = await response.json();
-        if (!response.ok) console.error('Resend error:', result);
-        else console.log('Order alert sent:', result.id);
-    } catch (err) {
-        console.error('Order alert failed:', err.message);
     }
+
+    return { customerEmailSent, ownerEmailSent };
 }
 // 4. Create Order (Checkout)
 app.post('/api/orders', (req, res) => {
@@ -161,9 +229,13 @@ app.post('/api/orders', (req, res) => {
     if (!Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ error: 'Invalid order data.' });
     }
+    if (typeof formData?.email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+        return res.status(400).json({ error: 'A valid customer email is required for order confirmation.' });
+    }
 
     const normalizedItems = items.map((item) => ({
         id: Number(item.id),
+        title: typeof item.title === 'string' ? item.title.slice(0, 150) : '',
         quantity: Number(item.quantity),
         price: Number(item.price)
     }));
@@ -215,18 +287,24 @@ app.post('/api/orders', (req, res) => {
                         return res.status(500).json({ error: 'Unable to place order.' });
                     }
 
-                    db.run('COMMIT', (commitError) => {
+                    db.run('COMMIT', async (commitError) => {
                         if (commitError) {
                             console.error('Order commit failed:', commitError.message);
                             db.run('ROLLBACK');
                             return res.status(500).json({ error: 'Unable to place order.' });
                         }
-                     sendOrderAlert({ orderId, items, total: totalAmount, formData });
+                        const { customerEmailSent, ownerEmailSent } = await sendOrderEmails({
+                            orderId,
+                            items: normalizedItems,
+                            total: totalAmount,
+                            formData
+                        });
                         res.status(201).json({
                             message: 'Order placed successfully',
                             orderId,
                             totalAmount,
-                            shipping: formData || null
+                            emailSent: customerEmailSent,
+                            ownerEmailSent
                         });
                     });
                 });

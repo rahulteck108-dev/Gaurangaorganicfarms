@@ -85,11 +85,14 @@ function Checkout() {
     }
 
     const storedUser = JSON.parse(localStorage.getItem('gauranga_user') || '{}');
+    const shippingDetails = Object.fromEntries(
+      ['name', 'email', 'address', 'city', 'state', 'zip', 'phone'].map(key => [key, formData[key]])
+    );
     const orderPayload = {
       userId: storedUser?.user?.id ?? null,
-      items: cartItems.map(({ id, quantity, price }) => ({ id, quantity, price })),
+      items: cartItems.map(({ id, title, quantity, price }) => ({ id, title, quantity, price })),
       totalAmount: getCartTotal(),
-      formData
+      formData: shippingDetails
     };
 
     try {
@@ -102,7 +105,10 @@ function Checkout() {
       const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
-        alert(`Order placed successfully!\nThank you for shopping with Gauranga Organic Farm.\nShipping to: ${formData.address}`);
+        const emailStatus = data.emailSent
+          ? `A confirmation email was sent to ${formData.email}.`
+          : 'Your order is placed, but the confirmation email could not be sent. Please contact us if you need help.';
+        alert(`Order placed successfully!\nThank you for shopping with Gauranga Organic Farm.\nShipping to: ${formData.address}\n${emailStatus}`);
         clearCart();
         navigate('/');
       } else {

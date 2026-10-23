@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gauranga-cache-v3';
+const CACHE_NAME = 'gauranga-cache-v5';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,8 +6,8 @@ const urlsToCache = [
   './login.html',
   './payment.html',
   './signup.html',
-  './style.css?v=6',
-  './script.js?v=16',
+  './style.css?v=7',
+  './script.js?v=17',
   './frontend/src/productImages.js',
   './images/gm.png'
 ];
@@ -18,6 +18,7 @@ self.addEventListener('install', event => {
       .then(cache => {
         return cache.addAll(urlsToCache);
       })
+      .then(() => self.skipWaiting())
   );
 });
 
@@ -44,6 +45,6 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
