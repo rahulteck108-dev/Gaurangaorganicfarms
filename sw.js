@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gauranga-cache-v1';
+const CACHE_NAME = 'gauranga-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,8 +6,9 @@ const urlsToCache = [
   './login.html',
   './payment.html',
   './signup.html',
-  './style.css?v=4',
-  './script.js?v=14',
+  './style.css?v=6',
+  './script.js?v=16',
+  './frontend/src/productImages.js',
   './images/gm.png'
 ];
 

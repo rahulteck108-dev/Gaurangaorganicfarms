@@ -116,7 +116,7 @@ function Checkout() {
 
   // Step Progress Bar Component
   const Stepper = () => (
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3rem', position: 'relative' }}>
+    <div className="checkout-stepper" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3rem', position: 'relative' }}>
       <div style={{ position: 'absolute', top: '15px', left: '0', right: '0', height: '2px', background: 'var(--border)', zIndex: 0 }}></div>
       
       {['Cart Review', 'Shipping Details', 'Payment'].map((label, index) => {
@@ -143,9 +143,9 @@ function Checkout() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-light)' }}>
+    <div className="checkout-page" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-light)' }}>
       <Navbar />
-      <div style={{ flex: 1, padding: '4rem 2rem 2rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+      <div className="checkout-content" style={{ flex: 1, padding: '4rem 2rem 2rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
         <h1 style={{ color: 'var(--primary-dark)', marginBottom: '1rem', textAlign: 'center' }}>Checkout</h1>
         
         {cartItems.length === 0 ? (
@@ -156,7 +156,7 @@ function Checkout() {
             <Link to="/" className="btn btn-primary">Start Shopping</Link>
           </div>
         ) : (
-          <div style={{ background: 'var(--white)', padding: '2.5rem', borderRadius: '16px', boxShadow: 'var(--shadow)' }}>
+          <div className="checkout-panel" style={{ background: 'var(--white)', padding: '2.5rem', borderRadius: '16px', boxShadow: 'var(--shadow)' }}>
             <Stepper />
 
             {/* STEP 1: CART REVIEW */}
@@ -164,13 +164,13 @@ function Checkout() {
               <div>
                 <h3 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>Step 1: Review Your Cart</h3>
                 {cartItems.map(item => (
-                  <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', marginBottom: '1rem' }}>
+                  <div key={item.id} className="checkout-cart-item" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', marginBottom: '1rem' }}>
                     <img src={item.image} alt={item.title} style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} />
                     <div style={{ flex: 1 }}>
                       <h4 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', marginBottom: '0.2rem' }}>{item.title}</h4>
                       <p style={{ color: 'var(--text-light)', fontWeight: 'bold' }}>₹{item.price.toFixed(2)} <span style={{ fontWeight: 'normal', fontSize: '0.8rem' }}>{item.unit}</span></p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                    <div className="checkout-quantity" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                       <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={{ width: '30px', height: '30px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-light)', cursor: 'pointer' }}>-</button>
                       <span style={{ fontWeight: 'bold' }}>{item.quantity}</span>
                       <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={{ width: '30px', height: '30px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-light)', cursor: 'pointer' }}>+</button>
@@ -184,7 +184,7 @@ function Checkout() {
                   </div>
                 ))}
                 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2rem', padding: '1.5rem', background: 'var(--bg-light)', borderRadius: '12px' }}>
+                <div className="checkout-cart-total" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2rem', padding: '1.5rem', background: 'var(--bg-light)', borderRadius: '12px' }}>
                   <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'var(--primary-dark)' }}>
                     Total: ₹{getCartTotal().toFixed(2)}
                   </div>
@@ -197,7 +197,7 @@ function Checkout() {
             {step === 2 && (
               <div>
                 <h3 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>Step 2: Shipping Details</h3>
-                <form style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                <form className="checkout-shipping-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                   <div style={{ gridColumn: 'span 2' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Full Name *</label>
                     <input type="text" name="name" value={formData.name} onChange={handleInputChange} style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', borderRadius: '8px' }} required />
@@ -228,7 +228,7 @@ function Checkout() {
                   </div>
                 </form>
                 
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2.5rem' }}>
+                <div className="checkout-step-actions" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2.5rem' }}>
                   <button className="btn btn-outline" onClick={prevStep}><i className="fas fa-arrow-left"></i> Back to Cart</button>
                   <button className="btn btn-primary" onClick={nextStep}>Next: Payment <i className="fas fa-arrow-right"></i></button>
                 </div>
@@ -237,7 +237,7 @@ function Checkout() {
 
             {/* STEP 3: PAYMENT DETAILS */}
             {step === 3 && (
-              <form onSubmit={handlePlaceOrder}>
+              <form className="checkout-payment-form" onSubmit={handlePlaceOrder}>
                 <h3 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)', borderBottom: '2px solid var(--border)', paddingBottom: '0.5rem' }}>Step 3: Payment Method</h3>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0', marginBottom: '2rem' }}>
@@ -258,7 +258,7 @@ function Checkout() {
                           <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-light)', fontWeight: '500' }}>Card Number *</label>
                           <input type="text" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} placeholder="1234 5678 9101 1121" maxLength="16" style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', borderRadius: '6px' }} required={formData.paymentMethod === 'credit'} />
                         </div>
-                        <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div className="checkout-payment-row" style={{ display: 'flex', gap: '1rem' }}>
                           <div style={{ flex: 1 }}>
                             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-light)', fontWeight: '500' }}>Expiry Date *</label>
                             <input type="text" name="cardExpiry" value={formData.cardExpiry} onChange={handleInputChange} placeholder="MM/YY" maxLength="5" style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', borderRadius: '6px' }} required={formData.paymentMethod === 'credit'} />
@@ -297,7 +297,7 @@ function Checkout() {
                         </div>
 
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-light)', fontWeight: '500' }}>UPI ID *</label>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <div className="checkout-payment-row" style={{ display: 'flex', gap: '0.5rem' }}>
                           <input type="text" name="upiId" value={formData.upiId} onChange={handleInputChange} placeholder="yourname@bank" style={{ flex: 1, padding: '0.8rem', border: '1px solid var(--border)', borderRadius: '6px' }} required={formData.paymentMethod === 'upi'} />
                           <button type="button" onClick={handleVerifyUpi} disabled={verifyingUpi || !formData.upiId || isUpiVerified} style={{ padding: '0 1.2rem', background: isUpiVerified ? '#28a745' : 'var(--primary)', color: 'var(--white)', border: 'none', borderRadius: '6px', cursor: (verifyingUpi || !formData.upiId || isUpiVerified) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500' }}>
                             {verifyingUpi ? <i className="fas fa-spinner fa-spin"></i> : isUpiVerified ? <><i className="fas fa-check-circle"></i> Verified</> : 'Verify'}

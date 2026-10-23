@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../api';
+import '../productImages.js';
+
+const productImages = globalThis.GAURANGA_PRODUCT_IMAGES;
 
 function Shop() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [failedImages, setFailedImages] = useState({});
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const { addToCart } = useCart();
@@ -15,7 +19,10 @@ function Shop() {
     fetch(`${API_BASE_URL}/api/products`)
       .then(res => res.json())
       .then(data => {
-        setProducts(data);
+        setProducts(data.map(product => ({
+          ...product,
+          ...productImages[product.title],
+        })));
         setLoading(false);
       })
       .catch(err => {
@@ -73,11 +80,33 @@ function Shop() {
         <div className="products-grid">
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
-              <div 
-                className="product-image" 
-                style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-              >
+              <div className="product-image">
+                {failedImages[product.id] ? (
+                  <div className="product-image-fallback" role="img" aria-label={`Image unavailable for ${product.title}`}>
+                    <i className="fas fa-leaf" aria-hidden="true"></i>
+                    <span>Image unavailable</span>
+                  </div>
+                ) : (
+                  <img
+                    className="product-photo"
+                    src={product.image.startsWith('images/') ? `/${product.image}` : product.image}
+                    alt={product.title}
+                    loading="lazy"
+                    onError={() => setFailedImages(previous => ({ ...previous, [product.id]: true }))}
+                  />
+                )}
                 <span className="organic-tag">100% Organic</span>
+                {product.imageCredit && (
+                  <a
+                    className="product-image-credit"
+                    href={product.imageCredit}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`View photo credit and license information for ${product.title}`}
+                  >
+                    Photo credit
+                  </a>
+                )}
               </div>
               <div className="product-info">
                 <span className="product-category" style={{ textTransform: 'capitalize' }}>{product.category}</span>

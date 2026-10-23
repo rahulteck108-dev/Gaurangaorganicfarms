@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const { getCartCount } = useCart();
 
@@ -46,11 +47,11 @@ function Navbar() {
           <i className="fas fa-seedling"></i> Gauranga Organic Farm
         </Link>
 
-        <ul className="nav-links">
-          <li><a href="/#home" className="active">Home</a></li>
-          <li><a href="/#shop">Shop Fresh</a></li>
-          <li><a href="/#gir-cow">Our Story</a></li>
-          <li><a href="/#contact">Contact</a></li>
+        <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+          <li><a href="/#home" className="active" onClick={() => setIsMenuOpen(false)}>Home</a></li>
+          <li><a href="/#shop" onClick={() => setIsMenuOpen(false)}>Shop Fresh</a></li>
+          <li><a href="/#gir-cow" onClick={() => setIsMenuOpen(false)}>Our Story</a></li>
+          <li><a href="/#contact" onClick={() => setIsMenuOpen(false)}>Contact</a></li>
         </ul>
 
         <div className="nav-icons" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -87,8 +88,14 @@ function Navbar() {
           </Link>
         </div>
 
-        <button className="mobile-menu-btn">
-          <i className="fas fa-bars"></i>
+        <button
+          className="mobile-menu-btn"
+          type="button"
+          aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen(open => !open)}
+        >
+          <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`} aria-hidden="true"></i>
         </button>
       </div>
     </nav>

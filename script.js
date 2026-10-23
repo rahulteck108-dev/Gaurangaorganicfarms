@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderProducts('all');
     setupFilters();
     setupSearch();
+    setupMobileMenu();
     setupCartDrawer();
     setupScrollSpy();
 });
@@ -80,6 +81,37 @@ async function fetchProducts() {
             { id: 55, title: "Farm Fresh Avocado", category: "fruits", price: 400, unit: "/ kg", image: "https://image.pollinations.ai/prompt/Farm%20Fresh%20Avocado?width=400&height=300&nologo=true" }
         ];
     }
+
+    const imageMap = window.GAURANGA_PRODUCT_IMAGES || {};
+    products = products.map(product => ({
+        ...product,
+        ...(imageMap[product.title] || {}),
+    }));
+}
+
+function setupMobileMenu() {
+    const menuButton = document.querySelector(".mobile-menu-btn");
+    const navLinks = document.querySelector(".nav-links");
+    if (!menuButton || !navLinks) return;
+
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Open navigation menu");
+    menuButton.addEventListener("click", () => {
+        const isOpen = menuButton.getAttribute("aria-expanded") !== "true";
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+        menuButton.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+        document.querySelector(".navbar").classList.toggle("mobile-menu-open", isOpen);
+        menuButton.innerHTML = `<i class="fas ${isOpen ? "fa-times" : "fa-bars"}" aria-hidden="true"></i>`;
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            menuButton.setAttribute("aria-expanded", "false");
+            menuButton.setAttribute("aria-label", "Open navigation menu");
+            document.querySelector(".navbar").classList.remove("mobile-menu-open");
+            menuButton.innerHTML = '<i class="fas fa-bars" aria-hidden="true"></i>';
+        });
+    });
 }
 
 function setupCartDrawer() {
@@ -157,8 +189,14 @@ function renderProducts(filter, searchQuery = "") {
         card.style.transformStyle = "preserve-3d";
 
         card.innerHTML = `
-            <div class="product-image" style="background-image: url('${product.image}'); background-size: cover; background-position: center; transform: translateZ(30px);">
+            <div class="product-image" style="transform: translateZ(30px);">
+                <img class="product-photo" src="${product.image.startsWith('images/') ? `/${product.image}` : product.image}" alt="${product.title}" loading="lazy">
+                <div class="product-image-fallback" role="img" aria-label="Image unavailable for ${product.title}" hidden>
+                    <i class="fas fa-leaf" aria-hidden="true"></i>
+                    <span>Image unavailable</span>
+                </div>
                 <span class="organic-tag" style="transform: translateZ(40px);">100% Organic</span>
+                ${product.imageCredit ? `<a class="product-image-credit" href="${product.imageCredit}" target="_blank" rel="noopener noreferrer" aria-label="View photo credit and license information for ${product.title}">Photo credit</a>` : ''}
             </div>
             <div class="product-info" style="transform: translateZ(30px);">
                 <span class="product-category">${product.category}</span>
@@ -184,6 +222,11 @@ function renderProducts(filter, searchQuery = "") {
         `;
 
         container.appendChild(card);
+        const photo = card.querySelector(".product-photo");
+        photo.addEventListener("error", () => {
+            photo.hidden = true;
+            card.querySelector(".product-image-fallback").hidden = false;
+        }, { once: true });
     });
 
     if (typeof VanillaTilt !== 'undefined') {
@@ -304,4 +347,3 @@ window.buyNow = function (productOrId) {
         window.location.href = "checkout.html";
     }
 };
-
