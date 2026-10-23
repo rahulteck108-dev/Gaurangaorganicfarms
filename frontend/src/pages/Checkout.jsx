@@ -105,10 +105,10 @@ function Checkout() {
       const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
-        const emailStatus = data.emailSent
+        const emailMessage = data.emailSent
           ? `A confirmation email was sent to ${formData.email}.`
-          : 'Your order is placed, but the confirmation email could not be sent. Please contact us if you need help.';
-        alert(`Order placed successfully!\nThank you for shopping with Gauranga Organic Farm.\nShipping to: ${formData.address}\n${emailStatus}`);
+          : 'Order is saved, but the confirmation email was not sent. Please check the sender setup with the site administrator.';
+        alert(`Order placed successfully!\nThank you for shopping with Gauranga Organic Farm.\nShipping to: ${formData.address}\n${emailMessage}`);
         clearCart();
         navigate('/');
       } else {

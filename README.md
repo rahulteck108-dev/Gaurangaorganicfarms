@@ -36,6 +36,10 @@ environment or Render service settings:
 Verify your sending domain and add the variables to Render's Environment
 settings before expecting customer emails. Until configured, signup, login, and
 order actions still complete, but the API reports that the email was not sent.
+The order response includes `emailStatus`: `not_configured` means the backend
+is missing `RESEND_API_KEY` or `MAIL_FROM`; `provider_rejected` means Resend
+rejected the configured sender or request; `provider_unavailable` indicates a
+network/provider timeout. Check the Render logs for the corresponding reason.
 Order notifications include delivery details only and never include card or
 UPI credentials. Both the React and static storefront flows use these backend
 notifications.

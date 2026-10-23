@@ -401,7 +401,7 @@
                     const data = await response.json();
                     const emailMessage = data.emailSent
                         ? `A confirmation email was sent to ${shipping.email}.`
-                        : "Your order is placed, but the confirmation email could not be sent. Please contact us if you need help.";
+                        : "Your order is saved, but the confirmation email was not sent. Please check the sender setup with the site administrator.";
                     alert(`Order placed successfully! Your fresh organic goods will be delivered shortly.\n${emailMessage}`);
                     localStorage.removeItem('cart');
                     localStorage.removeItem('cartCount');

@@ -45,7 +45,7 @@ function escapeHtml(value) {
 async function sendEmail({ to, subject, html }) {
     if (!process.env.RESEND_API_KEY || !process.env.MAIL_FROM) {
         console.error('Email not sent: configure RESEND_API_KEY and MAIL_FROM on the backend.');
-        return false;
+        return 'not_configured';
     }
 
     try {
@@ -67,13 +67,13 @@ async function sendEmail({ to, subject, html }) {
         if (!response.ok) {
             const result = await response.json().catch(() => ({}));
             console.error(`Email provider rejected message (${response.status}):`, result.message || result.name || 'Unknown provider error');
-            return false;
+            return 'provider_rejected';
         }
 
-        return true;
+        return 'sent';
     } catch (error) {
         console.error('Email provider request failed:', error.message);
-        return false;
+        return 'provider_unavailable';
     }
 }
 
@@ -120,8 +120,13 @@ app.post('/api/auth/signup', async (req, res) => {
                     console.error('Signup database insert failed:', err.message);
                     return res.status(500).json({ error: err.message });
                 }
-                const emailSent = await sendWelcomeEmail({ fullname, email });
-                res.status(201).json({ message: 'User created successfully', id: this.lastID, emailSent });
+                const emailStatus = await sendWelcomeEmail({ fullname, email });
+                res.status(201).json({
+                    message: 'User created successfully',
+                    id: this.lastID,
+                    emailSent: emailStatus === 'sent',
+                    emailStatus
+                });
             }
         );
     } catch (err) {
@@ -153,8 +158,13 @@ app.post('/api/auth/login', (req, res) => {
         }
 
         const { password: _, ...userData } = user;
-        const emailSent = await sendLoginNotice({ fullname: user.fullname, email: user.email });
-        res.json({ message: 'Login successful', user: userData, emailSent });
+        const emailStatus = await sendLoginNotice({ fullname: user.fullname, email: user.email });
+        res.json({
+            message: 'Login successful',
+            user: userData,
+            emailSent: emailStatus === 'sent',
+            emailStatus
+        });
     });
 });
 
@@ -195,7 +205,7 @@ async function sendOrderEmails({ orderId, items, total, formData }) {
         .join('');
     const customerEmail = formData.email.trim();
 
-    const customerEmailSent = await sendEmail({
+    const customerEmailStatus = await sendEmail({
         to: customerEmail,
         subject: `Your Gauranga Organic Farm order #${orderId} is placed`,
         html: `<h2>Thank you for your order, ${escapeHtml(formData.name || 'Customer')}!</h2>
@@ -206,9 +216,9 @@ async function sendOrderEmails({ orderId, items, total, formData }) {
                <h3>Delivery details</h3>${shippingDetails}`
     });
 
-    let ownerEmailSent = false;
+    let ownerEmailStatus = process.env.OWNER_EMAIL ? 'not_sent' : 'not_configured';
     if (process.env.OWNER_EMAIL) {
-        ownerEmailSent = await sendEmail({
+        ownerEmailStatus = await sendEmail({
             to: process.env.OWNER_EMAIL,
             subject: `New order #${orderId} - ₹${total}`,
             html: `<h2>New order received</h2>
@@ -219,7 +229,7 @@ async function sendOrderEmails({ orderId, items, total, formData }) {
         });
     }
 
-    return { customerEmailSent, ownerEmailSent };
+    return { customerEmailStatus, ownerEmailStatus };
 }
 // 4. Create Order (Checkout)
 app.post('/api/orders', (req, res) => {
@@ -293,7 +303,7 @@ app.post('/api/orders', (req, res) => {
                             db.run('ROLLBACK');
                             return res.status(500).json({ error: 'Unable to place order.' });
                         }
-                        const { customerEmailSent, ownerEmailSent } = await sendOrderEmails({
+                        const { customerEmailStatus, ownerEmailStatus } = await sendOrderEmails({
                             orderId,
                             items: normalizedItems,
                             total: totalAmount,
@@ -303,8 +313,10 @@ app.post('/api/orders', (req, res) => {
                             message: 'Order placed successfully',
                             orderId,
                             totalAmount,
-                            emailSent: customerEmailSent,
-                            ownerEmailSent
+                            emailSent: customerEmailStatus === 'sent',
+                            emailStatus: customerEmailStatus,
+                            ownerEmailSent: ownerEmailStatus === 'sent',
+                            ownerEmailStatus
                         });
                     });
                 });
